@@ -1,0 +1,170 @@
+<!doctype html>
+<html class="no-js">
+	<head>
+		<title>Image Cutter</title>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+					
+		<link rel="stylesheet/less" type="text/css" href="less/demo.less">
+		<link href='//fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js" data-async="true" type="text/javascript"></script>
+		
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css">
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="../src/image.cutter.js"></script>		
+		<script type="text/javascript" src="js/hammer.min.js"></script>		
+		<style type="text/css">
+			.imagePan {
+				width: 320px;
+				height: 320px;
+				position: relative;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1>Image Cutter</h1>	
+				<p>It is the pure javascript drag, zoom, rotate image in the container and get the coordinates.</p>
+			</header>			
+			<div class="demoContainer">
+				<h3>With jQuery UI Slider</h3>
+				
+				<div class="imagePan" id="img_sviewer_jquery"></div>
+				<div class="slider">
+					<p>Rotate Image</p>
+					<div id="rotate_slider"></div>
+				</div>
+				<div class="slider">
+					<p>Zoom Image</p>
+					<div id="zoom_slider"></div>
+				</div>
+				<div class="debug" id="img_sviewer_jquery_debug"></div>
+				<script type="text/javascript">
+					$(document).ready(function(){
+						$("#rotate_slider").slider({
+							step: 10,
+							max: 360,
+							min: 0,							
+							change: function( event, ui ) {
+								
+								image_slider.setRotation(ui.value);
+							},
+							slide: function( event, ui ) {
+								
+								image_slider.setRotation(ui.value);
+							}
+						});
+						
+						$("#zoom_slider").slider({
+							step: 0.05,
+							max: 3,
+							min: 0.5,
+							change: function( event, ui ) {
+								
+								image_slider.setScale(ui.value);
+							},
+							slide: function( event, ui ) {
+								
+								image_slider.setScale(ui.value);
+							}
+						});
+						var image_slider = new imageCutter(document.getElementById('img_sviewer_jquery'), {
+							minScale: 0.5,
+							maxScale: 3,
+							fit: true,
+							CSSTransition: false,
+							onLoaded: function(coordinates)
+							{
+								
+								$("#rotate_slider").slider('value', 0);
+								// if fit == true set the min value
+								$("#zoom_slider").slider("option", "min", coordinates.s);
+								
+								document.querySelector('#img_sviewer_jquery_debug').innerHTML =	JSON.stringify(coordinates);
+							},
+							onChange: function(coordinates)
+							{
+								document.querySelector('#img_sviewer_jquery_debug').innerHTML =	JSON.stringify(coordinates);
+							}
+						});
+						
+						image_slider.init('img/1.jpg');												
+					});
+				</script>
+			</div>
+			<div class="demoContainer">
+				<h3>Without jQuery UI Slider</h3>
+				
+				<div class="imagePan" id="img_sviewer_js"></div>
+				<div class="options">
+					<a href="#" class="zoomin" id="zoomin">Zoom in</a>
+					<a href="#" class="zoomout" id="zoomout">Zoom out</a>
+					<a href="#" class="rotateAntiClock" id="rotate_aclock">Rotate</a>
+					<a href="#" class="rotateClock" id="rotate_clock">Rotate</a>
+				</div>
+				<div class="inputUrl">
+					<input type="text" id="img1" placeholder="http://p1.pichost.me/i/71/1956341.jpg" />
+					<a href="#" id="btn1">Change</a>
+				</div>
+				<div class="debug" id="img_sviewer_js_debug"></div>
+				<script type="text/javascript">
+					window.onload = function()
+					{
+						var image_cutter = new imageCutter(document.getElementById('img_sviewer_js'), {
+							minScale: 0.5,
+							maxScale: 3,
+							fit: true,
+							rotatePerStep: 5,
+							onLoaded: function(coordinates)
+							{
+								document.querySelector('#img_sviewer_js_debug').innerHTML =	JSON.stringify(coordinates);
+																								
+							},
+							onChange: function(coordinates)
+							{
+								document.querySelector('#img_sviewer_js_debug').innerHTML =	JSON.stringify(coordinates);
+							}
+						});
+						
+						image_cutter.init('img/1.jpg');
+						
+						document.querySelector('#zoomin').onclick	=	function(e)
+						{		
+							image_cutter.next();
+							e.preventDefault();
+						};
+						
+						document.querySelector('#zoomout').onclick	=	function(e)
+						{		
+							image_cutter.prev();
+							e.preventDefault();
+						};
+						
+						document.querySelector('#rotate_aclock').onclick	=	function(e)
+						{
+							image_cutter.rotate('RClock');
+							e.preventDefault();
+						};
+						document.querySelector('#rotate_clock').onclick	=	function(e)
+						{
+							image_cutter.rotate();
+							e.preventDefault();
+						};
+						document.querySelector('#btn1').onclick	=	function(e)
+						{							
+							image_cutter.loadImage(document.querySelector('#img1').value);
+							e.preventDefault();
+						};						
+					};										
+				</script>
+			</div>
+			<footer>
+				
+			</footer>
+		</div>		
+	</body>
+</html>

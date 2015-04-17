@@ -1,0 +1,130 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	color: #FFFFFF;
+	background: #4e4c4d;
+	font-family: 'Abel', sans-serif;
+}
+.container {
+	header {
+		h1 {
+			padding: 20px 0;
+			text-align: center;
+		}
+		& > p {
+			padding: 0 0 11px 0;
+			text-align: center;
+			border-bottom: 1px solid;
+		}
+	}
+	.demoContainer {
+		width: 320px;		
+		margin: 0 auto;
+		h3 {
+			padding: 20px 0;
+			text-align: center;
+		}
+		.imagePan {
+			width: 320px;
+			height: 320px;
+			position: relative;
+			overflow: hidden;
+			background: #FFFFFF;
+			box-shadow: 2px 2px 20px;
+			-webkit-box-shadow: 2px 2px 20px;
+			-moz-box-shadow: 2px 2px 20px;
+			-ms-box-shadow: 2px 2px 20px;
+			.loader {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: url("../img/loader.gif") no-repeat center center #FFFFFF;
+				transition: all 1s;
+				-webkit-transition: all 1s;
+				-moz-transition: all 1s;
+				-ms-transition: all 1s;
+			}
+		}
+		.slider {
+			padding: 15px 0;
+			width: 99%;
+			p {
+				font-size: 14px;
+				padding-bottom: 10px;
+			}
+		}
+		.debug {
+			background: #000;
+			text-align: center;
+			padding: 8px;
+			font-size: 15px;
+			overflow: hidden;
+		}
+		a {
+			display: inline-block;
+			background: #2b96de;
+			padding: 3px 3px 3px 25px;
+			text-transform: capitalize;
+			text-decoration: none;
+			color: #FFFFFF;
+			position: relative;
+			&:before {
+				content: "";				
+				width: 16px;
+				height: 100%;
+				position: absolute;
+				left: 5px;
+				top: 0;
+			}
+			&.zoomin:before {
+				background: url("../img/zoom-in.png") no-repeat center center;
+			}
+			&.zoomout:before {
+				background: url("../img/zoom-out.png") no-repeat center center;
+			}
+			&.rotateAntiClock:before {
+				background: url("../img/anticlockwise.png") no-repeat center center;
+			}
+			&.rotateClock:before {
+				background: url("../img/clockwise.png") no-repeat center center;
+			}
+		}	
+		.options {
+			text-align: center;
+			padding: 10px 0;
+			
+		}
+		.inputUrl {
+			padding-bottom:10px;
+			input {
+				border: 0;
+				width: 240px;
+				padding: 4px;
+				height: 18px;
+			}
+			a {
+				padding: 3px 10px;
+			}
+		}
+	}
+	footer {
+		height: 30px;
+	}
+}
+/* overwrite slider */
+.ui-corner-all, .ui-slider-horizontal, .ui-slider-horizontal .ui-slider-handle {
+	border: 0 !important;
+	border-radius: 0 !important;
+	-webkit-border-radius: 0 !important;
+	-ms-border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+}
+.ui-slider-horizontal {	
+	background: #ffffff !important;
+}
+.ui-slider-horizontal .ui-slider-handle {	
+	background: #000000 !important;
+}
